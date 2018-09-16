@@ -305,6 +305,7 @@ var loadData = function() {
     });
 	});
 
+/*
 	var req2 = $.getJSON("/api/v1/replicationcontrollers?labelSelector=visualize%3Dtrue", function( data ) {
 		controllers = data;
 		$.each(data.items, function(key, val) {
@@ -312,7 +313,15 @@ var loadData = function() {
       //console.log("Controller ID = " + val.metadata.name)
     });
 	});
+*/
 
+	var req2 = $.getJSON("/apis/apps/v1/namespaces/default/replicasets?labelSelector=visualize%3Dtrue", function( data ) {
+		controllers = data;
+		$.each(data.items, function(key, val) {
+      val.type = 'replicaset';
+      //console.log("Controller ID = " + val.metadata.name)
+    });
+	});
 
 	var req3 = $.getJSON("/api/v1/services?labelSelector=visualize%3Dtrue", function( data ) {
 		services = data;
@@ -346,6 +355,7 @@ function refresh(instance) {
 	pods = [];
 	services = [];
 	controllers = [];
+	replicaset = [];
   nodes = [];
 	uses = {};
 	groups = {};
@@ -383,4 +393,4 @@ jsPlumb.bind("ready", function() {
 
 	refresh(instance);
 	jsPlumb.fire("jsPlumbDemoLoaded", instance);
-  });
+});
